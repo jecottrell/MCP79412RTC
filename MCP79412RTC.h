@@ -22,13 +22,17 @@
  *----------------------------------------------------------------------*/
 
 #ifndef MCP79412RTC_h
-#define MCP79412RTC_h
-#include <Time.h>
+  #define MCP79412RTC_h
+  #include <Time.h>
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include <Arduino.h>
+  #include <Arduino.h>
 #else
-#include <WProgram.h>
+  #include <WProgram.h>
+#endif
+
+#ifndef _BV                       //Macro is defined in AVR libraries not present in SAMD21
+  #define _BV(bit) (1 << (bit))   //if the macro isn't defined, define it
 #endif
 
 //MCP7941x I2C Addresses
@@ -126,6 +130,10 @@ class MCP79412RTC
         static uint8_t dec2bcd(uint8_t num);
         static uint8_t bcd2dec(uint8_t num);
 };
+
+#ifdef RTC   // From Paul Stoffregen's DS1307RTC library
+  #undef RTC // workaround for Arduino Due/Zero, which defines "RTC"...
+#endif
 
 extern MCP79412RTC RTC;
 
